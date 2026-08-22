@@ -282,23 +282,23 @@ function updateSales(next, immediate) { state.sales = next; apiSet('sales-log', 
 function updateFinishedStock(next, immediate) { state.finishedStock = next; apiSet('finished-stock', next, immediate ? 0 : 500); }
 function updateSettings(next, immediate) { state.settings = next; apiSet('settings', next, immediate ? 0 : 500); }
 
-function stockPatch(id, field, value) { updateFinishedStock(state.finishedStock.map((f) => (f.id === id ? { ...f, [field]: value } : f))); }
+function stockPatch(id, field, value) { updateFinishedStock(state.finishedStock.map((f) => (f.id === id ? { ...f, [field]: value } : f))); render(); }
 function stockRemove(id) { updateFinishedStock(state.finishedStock.filter((f) => f.id !== id), true); render(); }
 function stockAdd() {
   updateFinishedStock([...state.finishedStock, { id: uid(), product: 'wired', sheets: 60, variant: '', qty: 0 }], true);
   render();
 }
 
-function matPatch(id, field, value) { updateMaterials(state.materials.map((m) => (m.id === id ? { ...m, [field]: value } : m))); }
+function matPatch(id, field, value) { updateMaterials(state.materials.map((m) => (m.id === id ? { ...m, [field]: value } : m))); render(); }
 function matRemove(id) { updateMaterials(state.materials.filter((m) => m.id !== id), true); render(); }
-function prodPatch(key, field, value) { updateProducts({ ...state.products, [key]: { ...state.products[key], [field]: value } }); }
-function salePatch(id, field, value) { updateSales(state.sales.map((s) => (s.id === id ? { ...s, [field]: value } : s))); }
+function prodPatch(key, field, value) { updateProducts({ ...state.products, [key]: { ...state.products[key], [field]: value } }); render(); }
+function salePatch(id, field, value) { updateSales(state.sales.map((s) => (s.id === id ? { ...s, [field]: value } : s))); render(); }
 function saleAdd() {
   updateSales([...state.sales, { id: uid(), product: 'wired', sheets: 60, qty: 1, priceEach: 0, buyer: '', note: '', status: 'sold', date: new Date().toISOString().slice(0, 10), bundleProduct: '', bundleSheets: 0, bundleQty: 0 }], true);
   render();
 }
 function saleRemove(id) { updateSales(state.sales.filter((s) => s.id !== id), true); render(); }
-function settingsPatch(field, value) { updateSettings({ ...state.settings, [field]: value }); }
+function settingsPatch(field, value) { updateSettings({ ...state.settings, [field]: value }); render(); }
 
 function switchTab(tab) { state.tab = tab; render(); }
 
@@ -606,7 +606,7 @@ function batchUsageFor(batchQty) {
 }
 
 function plannerWant(key, value) { state.plannerQty[key] = Math.max(0, Math.round(value)); render(); }
-function matStockPatch(id, value) { updateMaterials(state.materials.map((m) => (m.id === id ? { ...m, stock: value } : m))); }
+function matStockPatch(id, value) { updateMaterials(state.materials.map((m) => (m.id === id ? { ...m, stock: value } : m))); render(); }
 function batchWant(key, value) { state.batchQty[key] = Math.max(0, Math.round(value)); render(); }
 function mixWant(key, value) { state.mixQty[key] = Math.max(0, Math.round(value)); render(); }
 
