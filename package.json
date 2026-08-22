@@ -1,0 +1,8 @@
+{
+  "name": "nc-dreams-notebook-calc",
+  "version": "1.0.0",
+  "description": "NC Dreams notebook, notepad and padpaper materials, costing and break-even calculator",
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
