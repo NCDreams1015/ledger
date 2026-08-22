@@ -355,8 +355,11 @@ function getComputed() {
 function numField(id, value, onchange, opts) {
   opts = opts || {};
   const suffix = opts.suffix ? `<span class="numfield-suffix">${esc(opts.suffix)}</span>` : '';
-  const min = opts.min != null ? `min="${opts.min}"` : '';
-  return `<div class="numfield"><input id="${id}" type="number" step="any" ${min} value="${Number.isFinite(value) ? value : 0}" oninput="withFocusPreserved(()=>{${onchange}})" />${suffix}</div>`;
+  const minAttr = opts.min != null ? Number(opts.min) : null;
+  // type="text" + inputmode="decimal" instead of type="number": number inputs
+  // don't support cursor-position APIs in any browser, which breaks typing
+  // when the field re-renders on every keystroke (digits land in the wrong spot).
+  return `<div class="numfield"><input id="${id}" type="text" inputmode="decimal" autocomplete="off" ${minAttr != null ? `data-min="${minAttr}"` : ''} value="${Number.isFinite(value) ? value : 0}" oninput="withFocusPreserved(()=>{ this.value = this.value.replace(/[^0-9.\\-]/g, ''); ${onchange} })" />${suffix}</div>`;
 }
 
 /* ---------- tab bar ---------- */
